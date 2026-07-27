@@ -1,4 +1,4 @@
-package PACKAGE_NAME;
+abstract public class Player {
 
-public class Player {
+    
 }
