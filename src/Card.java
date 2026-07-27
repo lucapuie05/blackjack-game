@@ -16,6 +16,10 @@ public class Card {
         return this.rank;
     }
 
+    public int getValue(){
+        return this.rank.getValue();
+    }
+
     @Override
     public String toString(){
         return this.rank+ " of " + this.suit;
