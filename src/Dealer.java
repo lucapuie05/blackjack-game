@@ -1,2 +1,3 @@
-public class Dealer {
+public class Dealer  extends Player{
+
 }
