@@ -7,13 +7,14 @@ public class Game {
 
     public void startGame(){
 
-        String answer;
+        boolean answer =true;
+        System.out.print("Enter your name: ");
+        String name = sc.nextLine();
+
         do{
+
             Deck deck = new Deck();
             deck.shuffle();
-
-            System.out.print("Enter your name: ");
-            String name = sc.nextLine();
 
             Player player = new HumanPlayer(name);
             Player dealer = new Dealer();
@@ -21,51 +22,69 @@ public class Game {
             drawFirstTwoCards(player,dealer,deck);
 
             boolean playerBust = playerTurn(player,deck);
-
             if(playerBust){
-
-            }
-
-            boolean dealerBust = dealerTurn(dealer, deck);
-
-            if(dealerBust){
-                System.out.println("Dealer bust! You won!");
-
-            }
-
-            if(player.calculateScore() > dealer.calculateScore()){
-                System.out.println("You won!");
-                System.out.println("Your score:" + player.calculateScore());
-                statistics.addWin();
-            }else if(player.calculateScore() < dealer.calculateScore()){
-                System.out.println("You lost! Dealer won!");
-                System.out.println("Dealer score: " + dealer.calculateScore());
-                statistics.addLoss();
+                answer = askPlayer();
+                if(!answer){
+                    return;
+                }
             }else {
-                System.out.println("Draw!");
-                statistics.addDraw();
+                boolean dealerBust = dealerTurn(dealer, deck);
+                if(dealerBust){
+                    System.out.println("Dealer bust! You won!");
+                    answer = askPlayer();
+                    if(!answer){
+                        return;
+                    }
+                }else {
+                    calculateWinner(player, dealer);
+                }
             }
 
-            System.out.append(statistics.toString());
-            System.out.println("Do you want to play again");
-            answer = sc.nextLine();
-        }while (answer.equals("yes"));
+            System.out.println(statistics.toString());
 
+            if(answer){
+                answer = askPlayer();
+            }
 
-
+        }while (answer);
 
     }
+
+
+    //HELPER METHODS
+
+    private void calculateWinner(Player player, Player dealer){
+        if(player.calculateScore() > dealer.calculateScore()){
+            System.out.println("You won!");
+            System.out.println("Your score:" + player.calculateScore());
+            System.out.println("Dealer score:" + dealer.calculateScore());
+            statistics.addWin();
+        }else if(player.calculateScore() < dealer.calculateScore()){
+            System.out.println("You lost! Dealer won!");
+            System.out.println("Dealer score: " + dealer.calculateScore());
+            System.out.println("Your score:" + player.calculateScore());
+            statistics.addLoss();
+        }else {
+            System.out.println("Draw!");
+            statistics.addDraw();
+        }
+    }
+
 
     private void drawFirstTwoCards(Player player, Player dealer, Deck deck){
         for(int i = 0; i < 2; i++) {
 
             Card playerCard = deck.drawCard();
+            System.out.println(playerCard.toString());
             player.addCard(playerCard);
 
+
             Card dealerCard = deck.drawCard();
+            System.out.println(dealerCard.toString());
             dealer.addCard(dealerCard);
         }
     }
+
 
     private boolean playerTurn(Player player, Deck deck){
 
@@ -79,18 +98,22 @@ public class Game {
             answer = answer.toLowerCase();
 
             if(answer.equals("hit")){
-                player.addCard(deck.drawCard());
+                Card playerCard = deck.drawCard();
+                System.out.println(playerCard.toString());
+                player.addCard(playerCard);
+                //player.addCard(deck.drawCard());
                 if(player.calculateScore() > 21){
                     System.out.println("BUST! You lost!");
                     playerBust = true;
                     return playerBust;
                 }
             }else {
-                break;
+                return false;
             }
         }
         return false;
     }
+
 
     private boolean dealerTurn(Player dealer, Deck deck){
         while(dealer.calculateScore() < 17){
@@ -101,6 +124,7 @@ public class Game {
         }
         return false;
     }
+
 
     private boolean askPlayer(){
         System.out.println("Do you want to play again? YES or NO?");
