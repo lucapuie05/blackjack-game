@@ -2,21 +2,61 @@ import java.util.Scanner;
 
 public class Game {
 
-
+    private GameStatistics statistics = new GameStatistics();
+    private Scanner sc = new Scanner(System.in);
 
     public void startGame(){
 
-        Deck deck = new Deck();
-        deck.shuffle();
+        String answer;
+        do{
+            Deck deck = new Deck();
+            deck.shuffle();
 
-        Scanner sc = new Scanner(System.in);
+            System.out.print("Enter your name: ");
+            String name = sc.nextLine();
 
-        System.out.println("Enter your name: ");
-        String name = sc.nextLine();
+            Player player = new HumanPlayer(name);
+            Player dealer = new Dealer();
 
-        Player player = new HumanPlayer(name);
-        Player dealer = new Dealer();
+            drawFirstTwoCards(player,dealer,deck);
 
+            boolean playerBust = playerTurn(player,deck);
+
+            if(playerBust){
+
+            }
+
+            boolean dealerBust = dealerTurn(dealer, deck);
+
+            if(dealerBust){
+                System.out.println("Dealer bust! You won!");
+
+            }
+
+            if(player.calculateScore() > dealer.calculateScore()){
+                System.out.println("You won!");
+                System.out.println("Your score:" + player.calculateScore());
+                statistics.addWin();
+            }else if(player.calculateScore() < dealer.calculateScore()){
+                System.out.println("You lost! Dealer won!");
+                System.out.println("Dealer score: " + dealer.calculateScore());
+                statistics.addLoss();
+            }else {
+                System.out.println("Draw!");
+                statistics.addDraw();
+            }
+
+            System.out.append(statistics.toString());
+            System.out.println("Do you want to play again");
+            answer = sc.nextLine();
+        }while (answer.equals("yes"));
+
+
+
+
+    }
+
+    private void drawFirstTwoCards(Player player, Player dealer, Deck deck){
         for(int i = 0; i < 2; i++) {
 
             Card playerCard = deck.drawCard();
@@ -25,11 +65,15 @@ public class Game {
             Card dealerCard = deck.drawCard();
             dealer.addCard(dealerCard);
         }
+    }
+
+    private boolean playerTurn(Player player, Deck deck){
 
         boolean playerBust = false;
 
         while(player.calculateScore() < 21){
 
+            System.out.println("Your score is: " + player.calculateScore());
             System.out.println("Hit or Stand? ");
             String answer = sc.nextLine();
             answer = answer.toLowerCase();
@@ -39,35 +83,35 @@ public class Game {
                 if(player.calculateScore() > 21){
                     System.out.println("BUST! You lost!");
                     playerBust = true;
-                    break;
+                    return playerBust;
                 }
             }else {
                 break;
             }
         }
+        return false;
+    }
 
-        if(playerBust){
-            System.out.println("Do you wanr to play again? YES or NO?");
-            String answer = sc.nextLine();
-            answer = answer.toLowerCase();
-            if(answer.equals("yes")){
-                // method to start a new game
-            }else{
-                System.out.println("Thank you for participating!");
-                System.out.println("GOODBYE!");
-                return;
-            }
-        }
-
+    private boolean dealerTurn(Player dealer, Deck deck){
         while(dealer.calculateScore() < 17){
             dealer.addCard(deck.drawCard());
             if(dealer.calculateScore() > 21){
-                System.out.println("Dealer BUST! You won!");
-                break;
+                return true;
             }
         }
+        return false;
+    }
 
-
-
+    private boolean askPlayer(){
+        System.out.println("Do you want to play again? YES or NO?");
+        String answer = sc.nextLine();
+        answer = answer.toLowerCase();
+        if(answer.equals("yes")){
+            return true;
+        }else{
+            System.out.println("Thank you for participating!");
+            System.out.println("GOODBYE!");
+            return false;
+        }
     }
 }
