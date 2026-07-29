@@ -27,5 +27,12 @@ public class Main {
             System.out.println(deck1.drawCard());
         }
 
+        System.out.println("--------------------------------------");
+        System.out.println("--------------------------------------");
+        System.out.println("--------------------------------------");
+
+        Game game = new Game();
+        game.startGame();
+
     }
 }
