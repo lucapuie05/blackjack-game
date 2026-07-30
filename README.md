@@ -42,7 +42,20 @@ A console-based implementation of the classic Blackjack card game developed in *
 
 ---
 
-## Future Improvements
+## 🧠 What I Learned
+
+During the development of this project, I practiced and improved my understanding of:
+
+- Object-Oriented Programming (abstraction, inheritance, polymorphism and encapsulation)
+- Class design and responsibility separation
+- Game flow implementation
+- User input validation
+- Git version control and commit history
+- Java collections and object interaction
+
+---
+
+## 🔮 Future Improvements
 
 - Hide the dealer's second card until the player's turn ends
 - Unit tests
