@@ -20,31 +20,60 @@ public class Game {
             Player dealer = new Dealer();
 
             drawFirstTwoCards(player,dealer,deck);
-
-            boolean playerBust = playerTurn(player,deck);
-            if(playerBust){
+            if(checkBlackjack(player) && !checkBlackjack(dealer)){
+                System.out.println("BLACKJACK! You won!");
+                statistics.addWin();
+                System.out.println(statistics.toString());
                 answer = askPlayer();
                 if(!answer){
                     return;
                 }
-            }else {
-                boolean dealerBust = dealerTurn(dealer, deck);
-                if(dealerBust){
-                    System.out.println("Dealer bust! You won!");
+            }else if(checkBlackjack(player) && checkBlackjack(dealer)){
+                System.out.println("You both have BLACKJACK! Draw!");
+                statistics.addDraw();
+                System.out.println(statistics.toString());
+                answer = askPlayer();
+                if(!answer){
+                    return;
+                }
+            }else if(!checkBlackjack(player) && checkBlackjack(dealer)){
+                System.out.println("Dealer has BLACKJACK! You lost!");
+                statistics.addLoss();
+                System.out.println(statistics.toString());
+                answer = askPlayer();
+                if(!answer){
+                    return;
+                }
+            } else {
+                boolean playerBust = playerTurn(player,deck);
+                if(playerBust){
+                    System.out.println(statistics.toString());
                     answer = askPlayer();
                     if(!answer){
                         return;
                     }
                 }else {
-                    calculateWinner(player, dealer);
+                    boolean dealerBust = dealerTurn(dealer, deck);
+                    if(dealerBust){
+                        System.out.println("Dealer bust! You won!");
+                        System.out.println("Dealer score:" + dealer.calculateScore());
+                        System.out.println(statistics.toString());
+                        answer = askPlayer();
+                        if(!answer){
+                            return;
+                        }
+                    }else {
+                        calculateWinner(player, dealer);
+                        System.out.println(statistics.toString());
+                        answer = askPlayer();
+                        if(!answer){
+                            return;
+                        }
+                    }
                 }
             }
 
-            System.out.println(statistics.toString());
 
-            if(answer){
-                answer = askPlayer();
-            }
 
         }while (answer);
 
@@ -66,6 +95,8 @@ public class Game {
             statistics.addLoss();
         }else {
             System.out.println("Draw!");
+            System.out.println("Your score:" + player.calculateScore());
+            System.out.println("Dealer score:" + dealer.calculateScore());
             statistics.addDraw();
         }
     }
@@ -104,6 +135,7 @@ public class Game {
                 //player.addCard(deck.drawCard());
                 if(player.calculateScore() > 21){
                     System.out.println("BUST! You lost!");
+                    statistics.addLoss();
                     playerBust = true;
                     return playerBust;
                 }
@@ -119,6 +151,7 @@ public class Game {
         while(dealer.calculateScore() < 17){
             dealer.addCard(deck.drawCard());
             if(dealer.calculateScore() > 21){
+                statistics.addWin();
                 return true;
             }
         }
@@ -137,5 +170,12 @@ public class Game {
             System.out.println("GOODBYE!");
             return false;
         }
+    }
+
+    private boolean checkBlackjack(Player player){
+        if(player.calculateScore() == 21){
+            return true;
+        }
+        return false;
     }
 }
