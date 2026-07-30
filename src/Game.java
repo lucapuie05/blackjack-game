@@ -7,7 +7,11 @@ public class Game {
 
     public void startGame(){
 
-        boolean answer =true;
+        System.out.println("===================================");
+        System.out.println("BLACKJACK");
+        System.out.println("===================================");
+
+        System.out.println();
         System.out.print("Enter your name: ");
         String name = sc.nextLine();
 
@@ -23,33 +27,25 @@ public class Game {
             if(checkBlackjack(player) && !checkBlackjack(dealer)){
                 System.out.println("BLACKJACK! You won!");
                 statistics.addWin();
-                System.out.println(statistics.toString());
-                answer = askPlayer();
-                if(!answer){
+                if(!endRound()){
                     return;
                 }
             }else if(checkBlackjack(player) && checkBlackjack(dealer)){
                 System.out.println("You both have BLACKJACK! Draw!");
                 statistics.addDraw();
-                System.out.println(statistics.toString());
-                answer = askPlayer();
-                if(!answer){
+                if(!endRound()){
                     return;
                 }
             }else if(!checkBlackjack(player) && checkBlackjack(dealer)){
                 System.out.println("Dealer has BLACKJACK! You lost!");
                 statistics.addLoss();
-                System.out.println(statistics.toString());
-                answer = askPlayer();
-                if(!answer){
+                if(!endRound()){
                     return;
                 }
             } else {
                 boolean playerBust = playerTurn(player,deck);
                 if(playerBust){
-                    System.out.println(statistics.toString());
-                    answer = askPlayer();
-                    if(!answer){
+                    if(!endRound()){
                         return;
                     }
                 }else {
@@ -57,16 +53,12 @@ public class Game {
                     if(dealerBust){
                         System.out.println("Dealer bust! You won!");
                         System.out.println("Dealer score:" + dealer.calculateScore());
-                        System.out.println(statistics.toString());
-                        answer = askPlayer();
-                        if(!answer){
+                        if(!endRound()){
                             return;
                         }
                     }else {
                         calculateWinner(player, dealer);
-                        System.out.println(statistics.toString());
-                        answer = askPlayer();
-                        if(!answer){
+                        if(!endRound()){
                             return;
                         }
                     }
@@ -75,12 +67,13 @@ public class Game {
 
 
 
-        }while (answer);
+        }while (true);
 
     }
 
 
     //HELPER METHODS
+
 
     private void calculateWinner(Player player, Player dealer){
         if(player.calculateScore() > dealer.calculateScore()){
@@ -103,41 +96,51 @@ public class Game {
 
 
     private void drawFirstTwoCards(Player player, Player dealer, Deck deck){
+
+        System.out.print("Your cards are: ");
         for(int i = 0; i < 2; i++) {
 
             Card playerCard = deck.drawCard();
-            System.out.println(playerCard.toString());
+            System.out.print(playerCard.toString() + "  ");
             player.addCard(playerCard);
 
 
             Card dealerCard = deck.drawCard();
-            System.out.println(dealerCard.toString());
+
             dealer.addCard(dealerCard);
         }
+        System.out.println();
     }
 
 
     private boolean playerTurn(Player player, Deck deck){
 
-        boolean playerBust = false;
-
         while(player.calculateScore() < 21){
 
             System.out.println("Your score is: " + player.calculateScore());
-            System.out.println("Hit or Stand? ");
-            String answer = sc.nextLine();
-            answer = answer.toLowerCase();
+            String answer;
+
+            do{
+                System.out.println("Hit or Stand? ");
+                answer = sc.nextLine().toLowerCase();
+
+                if (!(answer.equals("hit") || answer.equals("stand"))) {
+                    System.out.println("Invalid input! Please enter 'hit' or 'stand'.");
+                }
+
+            }while(!(answer.equals("hit") || answer.equals("stand")));
+
+
 
             if(answer.equals("hit")){
                 Card playerCard = deck.drawCard();
                 System.out.println(playerCard.toString());
                 player.addCard(playerCard);
-                //player.addCard(deck.drawCard());
                 if(player.calculateScore() > 21){
                     System.out.println("BUST! You lost!");
+                    System.out.println("Your score is: " + player.calculateScore());
                     statistics.addLoss();
-                    playerBust = true;
-                    return playerBust;
+                    return true;
                 }
             }else {
                 return false;
@@ -160,9 +163,19 @@ public class Game {
 
 
     private boolean askPlayer(){
-        System.out.println("Do you want to play again? YES or NO?");
-        String answer = sc.nextLine();
-        answer = answer.toLowerCase();
+
+
+        String answer;
+        do{
+            System.out.println("Do you want to play again? YES or NO?");
+            answer = sc.nextLine().toLowerCase();
+
+            if(!(answer.equals("yes") || answer.equals("no"))){
+                System.out.println("Invalid input! Please enter 'yes' or 'no'.");
+            }
+
+        }while (!(answer.equals("yes") || answer.equals("no")));
+
         if(answer.equals("yes")){
             return true;
         }else{
@@ -173,9 +186,12 @@ public class Game {
     }
 
     private boolean checkBlackjack(Player player){
-        if(player.calculateScore() == 21){
-            return true;
-        }
-        return false;
+
+        return player.calculateScore() == 21;
+    }
+
+    private boolean endRound(){
+        System.out.println(statistics.toString());
+        return askPlayer();
     }
 }
