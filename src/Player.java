@@ -18,7 +18,7 @@ abstract public class Player {
 
             if(!(currentCard.getRank().getValue() == 11)){
                 score += currentCard.getValue();
-            }else if(currentCard.getRank().getValue() == 11 && score < 11){
+            }else{
                 score += 11;
                 count++;
             }
