@@ -30,4 +30,12 @@ abstract public class Player {
         }
         return score;
     }
+
+    public int getHandSize(){
+        return hand.size();
+    }
+
+    public Card getCard(int index){
+        return hand.get(index);
+    }
 }
