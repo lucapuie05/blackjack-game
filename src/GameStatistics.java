@@ -19,7 +19,10 @@ public class GameStatistics {
 
     @Override
     public String toString(){
-        return "You have " + wins + " wins, " + draws + " draws and " + losses + " losses";
+
+        return "You have " + wins + (wins == 1 ? " win" : " wins") + ", "
+                + draws + (draws == 1 ? " draw" : " draws") + " and "
+                + losses + (losses == 1 ? " loss" : " losses");
     }
 
 }
