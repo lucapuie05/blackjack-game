@@ -23,9 +23,7 @@ public class Deck {
         List<Card> cardList = new ArrayList<>(deck);
         Collections.shuffle(cardList);
         deck.clear();
-        for(int i = 0; i < cardList.size(); i++){
-            deck.push(cardList.get(i));
-        }
+        deck.addAll(cardList);
     }
 
 
