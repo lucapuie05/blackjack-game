@@ -42,6 +42,18 @@ A console-based implementation of the classic Blackjack card game developed in *
 
 ---
 
+## ▶️ How to Run
+1. Clone the repository
+2. Open the project in IntelliJ IDEA
+3. Run `Main.java`
+
+Or compile manually:
+```bash
+javac src/*.java -d out
+java -cp out Main
+```
+---
+
 ## 🧠 What I Learned
 
 During the development of this project, I practiced and improved my understanding of:
@@ -57,7 +69,6 @@ During the development of this project, I practiced and improved my understandin
 
 ## 🔮 Future Improvements
 
-- Hide the dealer's second card until the player's turn ends
 - Unit tests
 - Betting system
 - Split and Double Down actions
