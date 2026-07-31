@@ -15,7 +15,19 @@ public class Game {
         System.out.print("Enter your name: ");
         String name = sc.nextLine();
 
+        System.out.println("Welcome to BLACKJACK " + name);
+        System.out.println();
+
+        int count = 0;
+
         do{
+
+            count++;
+
+            System.out.println("===================================");
+            System.out.println("ROUND " + count);
+            System.out.println("===================================");
+            System.out.println();
 
             Deck deck = new Deck();
             deck.shuffle();
@@ -27,25 +39,25 @@ public class Game {
             if(checkBlackjack(player) && !checkBlackjack(dealer)){
                 System.out.println("BLACKJACK! You won!");
                 statistics.addWin();
-                if(!endRound()){
+                if(!endRound(name)){
                     return;
                 }
             }else if(checkBlackjack(player) && checkBlackjack(dealer)){
                 System.out.println("You both have BLACKJACK! Draw!");
                 statistics.addDraw();
-                if(!endRound()){
+                if(!endRound(name)){
                     return;
                 }
             }else if(!checkBlackjack(player) && checkBlackjack(dealer)){
                 System.out.println("Dealer has BLACKJACK! You lost!");
                 statistics.addLoss();
-                if(!endRound()){
+                if(!endRound(name)){
                     return;
                 }
             } else {
                 boolean playerBust = playerTurn(player,deck);
                 if(playerBust){
-                    if(!endRound()){
+                    if(!endRound(name)){
                         return;
                     }
                 }else {
@@ -53,12 +65,12 @@ public class Game {
                     if(dealerBust){
                         System.out.println("Dealer bust! You won!");
                         System.out.println("Dealer score:" + dealer.calculateScore());
-                        if(!endRound()){
+                        if(!endRound(name)){
                             return;
                         }
                     }else {
                         calculateWinner(player, dealer);
-                        if(!endRound()){
+                        if(!endRound(name)){
                             return;
                         }
                     }
@@ -110,6 +122,7 @@ public class Game {
             dealer.addCard(dealerCard);
         }
         System.out.println();
+        System.out.println("Dealer first card is: " + dealer.getCard(0));
     }
 
 
@@ -151,8 +164,13 @@ public class Game {
 
 
     private boolean dealerTurn(Player dealer, Deck deck){
+
+        System.out.println("Dealer second card is: " + dealer.getCard(1));
+
         while(dealer.calculateScore() < 17){
-            dealer.addCard(deck.drawCard());
+            Card dealerCard = deck.drawCard();
+            dealer.addCard(dealerCard);
+            System.out.println("Dealer draws: " + dealerCard.toString());
             if(dealer.calculateScore() > 21){
                 statistics.addWin();
                 return true;
@@ -162,7 +180,7 @@ public class Game {
     }
 
 
-    private boolean askPlayer(){
+    private boolean askPlayer(String name){
 
 
         String answer;
@@ -179,7 +197,7 @@ public class Game {
         if(answer.equals("yes")){
             return true;
         }else{
-            System.out.println("Thank you for participating!");
+            System.out.println("Thank you for participating " + name + "!");
             System.out.println("GOODBYE!");
             return false;
         }
@@ -187,11 +205,11 @@ public class Game {
 
     private boolean checkBlackjack(Player player){
 
-        return player.calculateScore() == 21;
+        return player.calculateScore() == 21 && player.getHandSize() == 2;
     }
 
-    private boolean endRound(){
+    private boolean endRound(String name){
         System.out.println(statistics.toString());
-        return askPlayer();
+        return askPlayer(name);
     }
 }
