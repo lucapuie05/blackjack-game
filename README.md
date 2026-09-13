@@ -29,6 +29,7 @@ A console-based implementation of the classic Blackjack card game developed in *
 | `Dealer` | Represents the dealer |
 | `Game` | Controls the entire game flow |
 | `GameStatistics` | Tracks wins, losses and draws |
+| `ConsoleUI` | Manages all user interaction with the game |
 | `Main` | Application entry point |
 
 ---
