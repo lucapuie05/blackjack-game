@@ -76,6 +76,13 @@ public class ConsoleUI {
         return answer;
     }
 
+    public String askSplit(){
+        System.out.println();
+        System.out.println("Hit, Stand or Split?");
+        String answer = sc.nextLine().toLowerCase();
+        return answer;
+    }
+
     public void errorInputAskCard(){
         System.out.println("Invalid input! Please enter 'hit' or 'stand'.");
     }
@@ -83,6 +90,8 @@ public class ConsoleUI {
     public void errorInputAskGame(){
         System.out.println("Invalid input! Please enter 'yes' or 'no'.");
     }
+
+    public void errorInputAskSplit(){ System.out.println("Invalid input! Please enter 'hit', 'stand' or 'split'."); }
 
     public String askPlayer(){
         System.out.println();

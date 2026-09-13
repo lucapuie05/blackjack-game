@@ -127,12 +127,22 @@ public class Game {
             String answer;
 
             do{
-                answer = ui.askHitOrStand();
+                boolean firstTwoCards = checkFirstTwoCards(player.getCard(0),player.getCard(1));
+                if(firstTwoCards){
+                    answer = ui.askSplit();
 
-                if (!(answer.equals("hit") || answer.equals("stand"))) {
-                    ui.errorInputAskCard();
+                    if(!(answer.equals("hit") || answer.equals("stand") || answer.equals("split"))){
+                        ui.errorInputAskSplit();
+                    }
+                }else {
+                    answer = ui.askHitOrStand();
+
+                    if (!(answer.equals("hit") || answer.equals("stand"))) {
+                        ui.errorInputAskCard();
+                    }
                 }
-            }while(!(answer.equals("hit") || answer.equals("stand")));
+
+            }while(!(answer.equals("hit") || answer.equals("stand") || answer.equals("split")));
 
 
 
@@ -145,8 +155,6 @@ public class Game {
                     statistics.addLoss();
                     return true;
                 }
-            }else {
-                return false;
             }
         }
         return false;
@@ -202,6 +210,6 @@ public class Game {
     }
 
     private boolean checkFirstTwoCards(Card firstCard, Card secondCard){
-        return firstCard.equals(secondCard);
+        return firstCard.getValue() == secondCard.getValue();
     }
 }
