@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
@@ -25,6 +26,8 @@ public class Game {
             Player dealer = new Dealer();
 
             drawFirstTwoCards(player,dealer,deck);
+            boolean firstTwoCards = checkFirstTwoCards(player.getCard(0),player.getCard(1));
+
             if(checkBlackjack(player) && !checkBlackjack(dealer)){
                 ui.showBlackjackResult("BLACKJACK! You won!");
                 statistics.addWin();
@@ -196,5 +199,9 @@ public class Game {
     private boolean endRound(String name){
         ui.showStatistics(statistics.toString());
         return askPlayer(name);
+    }
+
+    private boolean checkFirstTwoCards(Card firstCard, Card secondCard){
+        return firstCard.equals(secondCard);
     }
 }
