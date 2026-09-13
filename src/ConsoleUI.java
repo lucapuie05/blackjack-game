@@ -6,14 +6,13 @@ public class ConsoleUI {
 
     public void start(){
         System.out.println("===================================");
-        System.out.println("BLACKJACK");
+        System.out.println("            BLACKJACK");
         System.out.println("===================================");
         System.out.println();
     }
 
     public void greetPlayer(String name){
         System.out.println("Welcome to BLACKJACK " + name);
-        System.out.println();
     }
 
     public String  askName(){
@@ -24,8 +23,9 @@ public class ConsoleUI {
     }
 
     public void showRound(int count){
+        System.out.println();
         System.out.println("===================================");
-        System.out.println("ROUND " + count);
+        System.out.println("             ROUND " + count);
         System.out.println("===================================");
         System.out.println();
     }
@@ -35,27 +35,42 @@ public class ConsoleUI {
     }
 
     public void dealerBust(int score){
-        System.out.println("Dealer bust! You won!");
+        System.out.println();
+        System.out.println("===================================");
+        System.out.println("      DEALER BUST! YOU WON!");
+        System.out.println("===================================");
+        System.out.println();
         System.out.println("Dealer score:" + score);
     }
 
     public void showWinner(String flag, int playerScore, int dealerScore){
+        System.out.println();
         if(flag.equals("Player")){
-            System.out.println("You won!");
+            System.out.println("===================================");
+            System.out.println("              YOU WON!");
+            System.out.println("===================================");
+            System.out.println();
             System.out.println("Your score:" + playerScore);
             System.out.println("Dealer score:" + dealerScore);
         }else if(flag.equals("Dealer")){
-            System.out.println("You lost! Dealer won!");
+            System.out.println("===================================");
+            System.out.println("      YOU LOST! DEALER WON!");
+            System.out.println("===================================");
+            System.out.println();
             System.out.println("Dealer score: " + dealerScore);
             System.out.println("Your score:" + playerScore);
         }else if(flag.equals("Draw")){
-            System.out.println("Draw!");
+            System.out.println("===================================");
+            System.out.println("              Draw!");
+            System.out.println("===================================");
+            System.out.println();
             System.out.println("Your score:" + playerScore);
             System.out.println("Dealer score:" + dealerScore);
         }
     }
 
     public String askHitOrStand(){
+        System.out.println();
         System.out.println("Hit or Stand? ");
         String answer = sc.nextLine().toLowerCase();
         return answer;
@@ -70,6 +85,7 @@ public class ConsoleUI {
     }
 
     public String askPlayer(){
+        System.out.println();
         System.out.println("Do you want to play again? YES or NO?");
         String answer = sc.nextLine().toLowerCase();
         return answer;
@@ -98,7 +114,11 @@ public class ConsoleUI {
     }
 
     public void showPlayerBust(int score){
-        System.out.println("BUST! You lost!");
+        System.out.println();
+        System.out.println("===================================");
+        System.out.println("           BUST! YOU LOST!");
+        System.out.println("===================================");
+        System.out.println();
         System.out.println("Your score is: " + score);
     }
 
